@@ -1,0 +1,25 @@
+# Data (large files - not committed)
+data/train_audio/
+data/test_soundscapes/*.ogg
+data/*.zip
+
+# Model weights
+models/*.pt
+models/*.onnx
+models/*.pth
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# macOS
+.DS_Store
+
+# Kaggle API credentials (never commit)
+kaggle.json
