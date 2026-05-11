@@ -1,5 +1,5 @@
 {
-  "id": "gorubachohu/birdclef2026-inference",
+  "id": "gorubachohu/birdclef2026-efficientnet-inference",
   "title": "BirdCLEF2026 EfficientNet Inference",
   "code_file": "inference_kaggle.ipynb",
   "language": "python",
