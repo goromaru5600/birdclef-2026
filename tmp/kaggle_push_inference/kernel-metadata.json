@@ -8,9 +8,10 @@
   "enable_gpu": false,
   "enable_tpu": false,
   "enable_internet": false,
-  "dataset_sources": [],
+  "dataset_sources": ["gorubachohu/birdclef2026-sc-model-fold0"],
   "competition_sources": ["birdclef-2026"],
   "kernel_sources": [
-    "gorubachohu/birdclef2026-efficientnet-training"
+    "gorubachohu/birdclef2026-efficientnet-training",
+    "gorubachohu/birdclef2026-training-with-soundscapes-fold0"
   ]
 }
