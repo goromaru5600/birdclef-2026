@@ -1,6 +1,6 @@
 {
-  "id": "gorubachohu/birdclef2026-perch-ensemble",
-  "title": "BirdCLEF2026 PERCH + EfficientNet Ensemble",
+  "id": "gorubachohu/birdclef2026-perch-efficientnet-ensemble",
+  "title": "BirdCLEF2026 PERCH EfficientNet Ensemble",
   "code_file": "inference_perch_ensemble.ipynb",
   "language": "python",
   "kernel_type": "notebook",
