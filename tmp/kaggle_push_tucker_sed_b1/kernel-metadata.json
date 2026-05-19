@@ -12,7 +12,8 @@
   "dataset_sources": [
     "tuckerarrants/bc2026-distilled-sed-public",
     "tuckerarrants/birdclef-2026-waveform-cache",
-    "tuckerarrants/perch-v2-no-dft-onnx"
+    "tuckerarrants/perch-v2-no-dft-onnx",
+    "gorubachohu/timm-efficientnet-b1-ns-jft-in1k"
   ],
   "kernel_sources": [],
   "competition_sources": [
