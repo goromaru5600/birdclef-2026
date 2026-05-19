@@ -1,0 +1,22 @@
+{
+  "id": "gorubachohu/birdclef2026-tucker-sed-b1",
+  "title": "BirdCLEF2026 Tucker SED B1",
+  "code_file": "bc2026-distilled-sed.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [],
+  "dataset_sources": [
+    "tuckerarrants/bc2026-distilled-sed-public",
+    "tuckerarrants/birdclef-2026-waveform-cache",
+    "tuckerarrants/perch-v2-no-dft-onnx"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [
+    "birdclef-2026"
+  ],
+  "model_sources": []
+}
