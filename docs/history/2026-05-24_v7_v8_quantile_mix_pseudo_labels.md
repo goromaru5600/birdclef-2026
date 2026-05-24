@@ -181,3 +181,66 @@ pred = norm.cdf(q_blend)
 - 待ち時間に Site/Hour priors (A #7) 検討
 - 評価方法を変更: 今後はOOF全pipeline回して `submission.csv` 同士で比較
 
+
+
+---
+
+## 追記 (Phase 2完了後): v9 push + Site/Hour priors見送り
+
+### Phase 2 結果分析
+
+**疑似ラベルは実は使われていなかった**:
+- 疑似ラベル生成: train_soundscapes 先頭50 files (Kaggle CPU 820s完了)
+- 既存sc_cache_meta: 66 labeled files
+- 先頭50 ⊂ 66 labeled → 追加chunk = 0
+- `is_pseudo_mask.sum() == 0` → 実質「同じデータで再学習」になった
+
+**それでも改善あり**:
+| Fold | Original | Phase 2 | 差分 |
+|------|----------|---------|------|
+| fold 0 | 0.7148 | 0.7507 | +0.036 ✅ |
+| fold 4 | 0.8282 (avg) | 0.8879 | +0.060 |
+| fold 3 | 0.8282 (avg) | 0.9739 (2 classes) | 不安定改善 |
+
+### v9 push 内容
+
+- B0 SED 5fold (40%) + Tucker B1 SED 3fold [0,3,4] (10%) + ProtoSSM (60%)
+- Phase 2再学習済み B1 ONNX を `gorubachohu/560-sed-distill-fold0` の新バージョンへupload
+- B1 inference loop 復活 (audio_to_mel_128, 128 mel)
+- session数: 5 B0 + 3 B1 = 8 (タイムアウト安全圏)
+
+### Site/Hour priors 調査 → 既実装と判明
+
+EoS5 cell 13 L585-685 にすでに高品質実装:
+- Global / Site / Hour / Joint Site×Hour buckets
+- Shrinkage `n/(n+8)` (site/hour), `n/(n+4)` (joint)
+- Circular Gaussian smoothing (sigma=1.5h, wrap-around)
+- Logit additive: `score += λ × (log(p) - log(1-p))`
+- 現 `lambda_prior=0.5` (exp017で 0.4→0.5 tuning済)
+
+**結論**: A案 #7 (Site/Hour priors) も Quantile-Mix と同様、agent推奨手法はすでに実装済みのケースだった。
+
+### 教訓 (subagent調査について)
+
+- 「公開Notebookで使われている手法」≠「我々のpipelineにない手法」
+- 推奨手法の実装有無を、提案前に既存コードで grep verify すべき
+- 今後: agent調査結果は「実装確認」を必ず挟む
+
+### 残る本当に未着手の施策
+
+| 優先 | 案 | 期待値 | 工数 |
+|------|----|--------|------|
+| 1 | **真の疑似ラベル再学習** (重複ファイル除外) | +0.005〜0.010 | 1日 |
+| 2 | A #5 Silero-VAD 人声除去 | 不明 | 中 |
+| 3 | A #6 rare-class head retrain | 不明 | 中 |
+| 4 | A #4 Multi-scale mel diversity | +0.013〜0.020 | 大 |
+| 5 | A #1 Multi-year pretrain | +0.013〜0.026 | 大 |
+| 6 | lambda_prior 微調整 (0.55, 0.6) | +0.001 | 即時 |
+
+### v9 LB結果次第の判断ツリー
+
+- v9 ≥ 0.951: B1機能、続けて lambda_prior 微調整 → 0.952狙い
+- v9 = 0.950: 微改善、真の疑似ラベル再挑戦
+- v9 = 0.949: 変化なし、真の疑似ラベル or 純CNN (A #4)
+- v9 < 0.949: B1撤回、別アプローチ
+
