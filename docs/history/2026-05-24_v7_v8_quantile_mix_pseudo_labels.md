@@ -152,3 +152,32 @@ pred = norm.cdf(q_blend)
 - OOF評価データ: `tmp/kaggle_push_eos5/eval_data.npz` (P, S, Y, class_mask)
 - Push スクリプト: `tmp/kaggle_push_eos5/push_v7.py`, `push_v8.py`
 - Kaggle API auth: KGAT_ token + Bearer auth (`/kaggle/api/v1/kernels/push`)
+
+
+---
+
+## 追記 (LB結果判明後): v8 = 0.949
+
+**Submit結果**: v8 LB = **0.949** (v5/v7と同等、改善なし)
+
+### 失敗原因分析
+
+| 観点 | 説明 |
+|------|------|
+| OOF評価の浅さ | Blend直後の `pred` で評価 → 全pipeline通過後の値ではない |
+| 下流処理が吸収 | Gate 1-5 (noise/temporal/sed-spike/sonotype/rare) + threshold sharpening + Gaussian smoothing がblend微差を相殺 |
+| OOF差の規模 | +0.0011 は本来ノイズ範囲内、信頼できなかった |
+
+### 教訓
+
+1. **OOF評価はpipeline末端 (`submission.csv`) で行う** — 単一blend出力では不十分
+2. **後処理が複雑なpipelineではblend変更は効果薄** — モデル多様性のほうが効く
+3. **+0.001以下のOOF差は信頼しない** — 評価誤差と区別困難
+
+### 今後の方針
+
+- v8 はそのまま (悪化していないので保持)
+- **Phase 2 (B1再学習) に集中** — モデル自体を強化する真の改善
+- 待ち時間に Site/Hour priors (A #7) 検討
+- 評価方法を変更: 今後はOOF全pipeline回して `submission.csv` 同士で比較
+
