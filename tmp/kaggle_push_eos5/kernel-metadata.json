@@ -14,7 +14,8 @@
     "tuckerarrants/perch-v2-no-dft-onnx",
     "rishikeshjani/perch-onnx-for-birdclef-2026",
     "hideyukizushi/sgkfk-202604041716",
-    "gorubachohu/560-sed-distill-fold0"
+    "victorfernandezalbor/birdclef-2026-effv2m-ckpt",
+    "beyondlogic/birdclef-2026-models-v3"
   ],
   "kernel_sources": [
     "ashok205/tf-wheels",
