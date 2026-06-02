@@ -29,8 +29,12 @@ tmp/**/*.onnx
 tmp/**/*.whl
 tmp/**/*.pt
 tmp/**/*.pth
+tmp/**/*.ipynb
+tmp/**/*.csv
+tmp/**/*.json
 tmp/**/cache/
 tmp/**/perch_cache/
 tmp/**/output/
 tmp/**/*.log
+tmp/**/*.safetensors
 .python-version
